@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bodapati Lakshmi Surya Sindhu - Portfolio</title>
+    <meta name="description" content="Full-Stack Developer & AI Enthusiast specializing in Java, Python, ReactJS, and Machine Learning.">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- React & Babel -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Framer Motion -->
+    <script src="https://unpkg.com/framer-motion@10/dist/framer-motion.js"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --background: hsl(240, 100%, 7%);
+            --foreground: hsl(0, 0%, 100%);
+            --cyan-neon: hsl(193, 100%, 50%);
+            --purple-neon: hsl(280, 100%, 70%);
+            --glass: hsla(0, 0%, 100%, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, hsl(240, 100%, 7%) 0%, hsl(240, 50%, 15%) 100%);
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .font-orbitron {
+            font-family: 'Orbitron', monospace;
+        }
+
+        .font-jetbrains {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .glass-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.5), 0 0 40px rgba(0, 212, 255, 0.3);
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+        }
+
+        .text-cyan-neon {
+            color: var(--cyan-neon);
+        }
+
+        .text-purple-neon {
+            color: var(--purple-neon);
+        }
+
+        .bg-cyan-neon {
+            background-color: var(--cyan-neon);
+        }
+
+        .bg-purple-neon {
+            background-color: var(--purple-neon);
+        }
+
+        /* Navigation */
+        .nav-container {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 50;
+            transition: all 0.3s ease;
+            padding: 1rem 0;
+        }
+
+        .nav-container.scrolled {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .nav-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--cyan-neon);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-menu li {
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .nav-menu li:hover {
+            color: var(--cyan-neon);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+        }
+
+        .profile-photo {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 2rem;
+            position: relative;
+        }
+
+        .profile-photo::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--cyan-neon), var(--purple-neon));
+            padding: 3px;
+        }
+
+        .profile-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero h1 {
+            font-size: clamp(2rem, 8vw, 4rem);
+            font-weight: 900;
+            margin-bottom: 1rem;
+            color: var(--cyan-neon);
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.8);
+        }
+
+        .hero h2 {
+            font-size: clamp(1.5rem, 6vw, 3rem);
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: var(--purple-neon);
+        }
+
+        .typing-text {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            height: 2rem;
+            border-right: 3px solid var(--cyan-neon);
+            animation: blink 1s infinite;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+        }
+
+        .btn-secondary {
+            border: 2px solid var(--cyan-neon);
+            background: transparent;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Sections */
+        .section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: var(--cyan-neon);
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 6rem;
+            height: 4px;
+            background: linear-gradient(to right, var(--cyan-neon), var(--purple-neon));
+            margin: 1rem auto;
+        }
+
+        /* Grid Layouts */
+        .grid {
+            display: grid;
+            gap: 2rem;
+        }
+
+        .grid-2 {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        }
+
+        .grid-3 {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        }
+
+        .card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 2rem;
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.3);
+        }
+
+        /* Skills Progress */
+        .skill-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--cyan-neon), var(--purple-neon));
+            border-radius: 4px;
+            transition: width 2s ease;
+        }
+
+        /* Floating Shapes */
+        .floating-shapes {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border: 2px solid;
+            opacity: 0.1;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 8rem;
+            height: 8rem;
+            border-color: var(--cyan-neon);
+            top: 10%;
+            left: 10%;
+            transform: rotate(45deg);
+        }
+
+        .shape-2 {
+            width: 6rem;
+            height: 6rem;
+            border-color: var(--purple-neon);
+            border-radius: 50%;
+            top: 30%;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .shape-3 {
+            width: 10rem;
+            height: 10rem;
+            border-color: var(--cyan-neon);
+            bottom: 30%;
+            left: 15%;
+            transform: rotate(45deg);
+            animation-delay: 4s;
+        }
+
+        .shape-4 {
+            width: 5rem;
+            height: 5rem;
+            border-color: var(--purple-neon);
+            border-radius: 50%;
+            bottom: 10%;
+            right: 15%;
+            animation-delay: 6s;
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+
+        @keyframes blink {
+            0%, 50% { border-color: var(--cyan-neon); }
+            51%, 100% { border-color: transparent; }
+        }
+
+        /* Contact Form */
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 0.5rem;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--cyan-neon);
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+        
+        // Navigation Component
+        function Navigation() {
+            const [scrolled, setScrolled] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => {
+                    setScrolled(window.scrollY > 50);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const scrollToSection = (sectionId) => {
+                document.getElementById(sectionId)?.scrollIntoView({ behavior: 'smooth' });
+            };
+
+            return (
+                <nav className={`nav-container ${scrolled ? 'scrolled' : ''}`}>
+                    <div className="nav-content">
+                        <div className="logo font-orbitron">
+                            <i className="fas fa-code"></i> SINDHU.DEV
+                        </div>
+                        <ul className="nav-menu">
+                            <li onClick={() => scrollToSection('home')}>Home</li>
+                            <li onClick={() => scrollToSection('about')}>About</li>
+                         
+                            <li onClick={() => scrollToSection('projects')}>Projects</li>
+                            <li onClick={() => scrollToSection('skills')}>Skills</li>
+                            <li onClick={() => scrollToSection('contact')}>Contact</li>
+                        </ul>
+                    </div>
+                </nav>
+            );
+        }
+
+        // Hero Component
+        function Hero() {
+            const [typedText, setTypedText] = useState('');
+            const fullText = "Full-Stack Developer & AI Enthusiast";
+
+            useEffect(() => {
+                let index = 0;
+                const timer = setInterval(() => {
+                    if (index < fullText.length) {
+                        setTypedText(fullText.slice(0, index + 1));
+                        index++;
+                    } else {
+                        clearInterval(timer);
+                    }
+                }, 100);
+                return () => clearInterval(timer);
+            }, []);
+
+            return (
+                <section id="home" className="hero">
+                    <div>
+                    
+<div className="profile-photo">
+    <a href="https://linkedin.com/in/sindhubodapati" target="_blank" rel="noopener noreferrer">
+        <img src="Profile_photo.jpg" alt="Bodapati Lakshmi Surya Sindhu" />
+    </a>
+</div>
+
+                        <h1 className="font-orbitron">BODAPATI LAKSHMI</h1>
+                        <h2 className="font-orbitron">SURYA SINDHU</h2>
+                        <div className="typing-text font-jetbrains">{typedText}</div>
+                        <p style={{maxWidth: '600px', margin: '0 auto 2rem', color: '#ccc'}}>
+                            Crafting innovative solutions with cutting-edge technology. Specialized in AI/ML, 
+                            full-stack development, and algorithmic problem-solving.
+                        </p>
+                        <div className="hero-buttons">
+                            <button className="btn btn-primary">
+                                <i className="fas fa-download"></i> Download Resume
+                            </button>
+                            <button className="btn btn-secondary" onClick={() => document.getElementById('contact').scrollIntoView({behavior: 'smooth'})}>
+                                <i className="fas fa-paper-plane"></i> Let's Connect
+                            </button>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // About Component
+        function About() {
+            return (
+                <section id="about" className="section">
+                    <div className="section-title">
+                        <h2 className="font-orbitron"><i className="fas fa-user-astronaut"></i> About Me</h2>
+                    </div>
+                    <div className="grid grid-2">
+                        <div className="card">
+                            <h3 className="font-orbitron text-purple-neon" style={{marginBottom: '1.5rem'}}>
+                                <i className="fas fa-graduation-cap"></i> Education
+                            </h3>
+                            <div style={{borderLeft: '4px solid var(--cyan-neon)', paddingLeft: '1.5rem', marginBottom: '1.5rem'}}>
+                                <h4 style={{color: 'var(--cyan-neon)'}}>BTech - Computer Science (AI/ML)</h4>
+                                <p style={{color: '#ccc'}}>Shri Vishnu Engineering College for Women</p>
+                                <p style={{color: '#999'}}>CGPA: 8.9/10 | Expected 2026</p>
+                            </div>
+                            <div style={{borderLeft: '4px solid var(--purple-neon)', paddingLeft: '1.5rem'}}>
+                                <h4 style={{color: 'var(--purple-neon)'}}>Intermediate</h4>
+                                <p style={{color: '#ccc'}}>Sasi Junior College</p>
+                                <p style={{color: '#999'}}>97% | 2021-2022</p>
+                            </div>
+                        </div>
+                        <div className="card">
+                            <h3 className="font-orbitron text-cyan-neon" style={{marginBottom: '1.5rem'}}>
+                                <i className="fas fa-rocket"></i> Mission
+                            </h3>
+                            <p style={{color: '#ccc', lineHeight: '1.6', marginBottom: '1.5rem'}}>
+                                Passionate about leveraging artificial intelligence and machine learning to solve real-world problems. 
+                                With a strong foundation in full-stack development and algorithmic thinking, I strive to create 
+                                innovative solutions that make a meaningful impact.
+                            </p>
+                            <div style={{display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', textAlign: 'center'}}>
+                                <div className="glass-effect" style={{padding: '1rem', borderRadius: '0.5rem'}}>
+                                    <i className="fas fa-trophy text-cyan-neon" style={{fontSize: '2rem', marginBottom: '0.5rem'}}></i>
+                                    <p>5+ Awards</p>
+                                </div>
+                                <div className="glass-effect" style={{padding: '1rem', borderRadius: '0.5rem'}}>
+                                    <i className="fas fa-project-diagram text-purple-neon" style={{fontSize: '2rem', marginBottom: '0.5rem'}}></i>
+                                    <p>10+ Projects</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Skills Component
+        function Skills() {
+            const [isVisible, setIsVisible] = useState(false);
+
+            useEffect(() => {
+                const observer = new IntersectionObserver(
+                    ([entry]) => {
+                        if (entry.isIntersecting) {
+                            setIsVisible(true);
+                        }
+                    },
+                    { threshold: 0.5 }
+                );
+
+                const element = document.getElementById('skills');
+                if (element) {
+                    observer.observe(element);
+                }
+                return () => observer.disconnect();
+            }, []);
+
+            const skillCategories = [
+                {
+                    title: "Programming Languages",
+                    icon: "fas fa-code",
+                    color: "text-cyan-neon",
+                    skills: [
+                        { name: "Java", level: 90 },
+                        { name: "Python", level: 85 },
+                        { name: "C", level: 80 },
+                    ],
+                },
+                {
+                    title: "Web Technologies",
+                    icon: "fas fa-globe",
+                    color: "text-purple-neon",
+                    skills: [
+                        { name: "ReactJS", level: 85 },
+                        { name: "JavaScript", level: 80 },
+                        { name: "HTML/CSS", level: 90 },
+                    ],
+                },
+                {
+                    title: "Database & Tools",
+                    icon: "fas fa-database",
+                    color: "text-cyan-neon",
+                    skills: [
+                        { name: "MySQL", level: 85 },
+                        { name: "MongoDB", level: 75 },
+                        { name: "Git", level: 80 },
+                    ],
+                },
+            ];
+
+            return (
+                <section id="skills" className="section">
+                    <div className="section-title">
+                        <h2 className="font-orbitron"><i className="fas fa-cogs"></i> Skills</h2>
+                    </div>
+                    <div className="grid grid-3">
+                        {skillCategories.map((category, index) => (
+                            <div key={index} className="card">
+                                <h3 className={`font-orbitron ${category.color}`} style={{marginBottom: '1.5rem'}}>
+                                    <i className={category.icon}></i> {category.title}
+                                </h3>
+                                {category.skills.map((skill, skillIndex) => (
+                                    <div key={skillIndex} className="skill-item">
+                                        <div className="skill-header">
+                                            <span>{skill.name}</span>
+                                            <span className={category.color}>{skill.level}%</span>
+                                        </div>
+                                        <div className="progress-bar">
+                                            <div 
+                                                className="progress-fill"
+                                                style={{
+                                                    width: isVisible ? `${skill.level}%` : '0%'
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            );
+        }
+
+        // Projects Component
+function Projects() {
+   
+const projects = [
+    {
+        title: "SORTSEARCH",
+        icon: "fas fa-sort-amount-down",
+        description: "Visual learning tool to simulate 6+ sorting and searching algorithms with real-time animations. Received 500+ GitHub views and widely shared among peers for DSA learning.",
+        tags: ["HTML", "CSS", "JavaScript", "Algorithms"],
+        stats: "500+ views",
+        color: "text-cyan-neon",
+        site: "https://sindhubodapati.github.io/SORTSEARCH/",
+        github: "https://github.com/Sindhubodapati/sortsearch"
+    },
+    {
+        title: "Stroke Prediction App",
+        icon: "fas fa-brain",
+        description: "Machine learning web application to predict stroke risk using Logistic Regression and Random Forest models. Includes comprehensive EDA and feature engineering on health-related attributes.",
+        tags: ["Python", "Flask", "ML", "Data Analysis"],
+        stats: "ML Model",
+        color: "text-purple-neon",
+        site: "https://github.com/Sindhubodapati/Stroke-prediction",
+        github: "https://github.com/Sindhubodapati/Stroke-prediction"
+    },
+    {
+        title: "TravelHub",
+        icon: "fas fa-suitcase-rolling",
+        description: "Designed and developed TravelHub, a Java-based desktop application using Swing, AWT, and MySQL to manage travel bookings end-to-end. Implemented features like user authentication, password recovery, destination selection, booking, and Paytm payment simulation. Applied OOP principles for modular, maintainable code and gained hands-on experience with full-stack workflows and backend integration.",
+        tags: ["Java", "Swing", "AWT", "MySQL", "OOP"],
+        stats: "Desktop App",
+        color: "text-cyan-neon",
+        site: "https://github.com/Sindhubodapati/TravelHub",
+        github: "https://github.com/Sindhubodapati/TravelHub"
+    },
+];
+
+
+    return (
+        <section id="projects" className="section">
+            <div className="section-title">
+                <h2 className="font-orbitron"><i className="fas fa-code"></i> Projects</h2>
+            </div>
+            <div className="grid grid-2">
+                {projects.map((project, index) => (
+                    <div key={index} className="card">
+                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem'}}>
+                            <h3 className={`font-orbitron ${project.color}`}>
+                                <i className={project.icon}></i> {project.title}
+                            </h3>
+                            <div style={{display: 'flex', gap: '1rem'}}>
+                                <a href={project.site} className={project.color} target="_blank" rel="noopener noreferrer">
+                                    <i className="fas fa-external-link-alt"></i>
+                                </a>
+                                <a href={project.github} className={project.color} target="_blank" rel="noopener noreferrer">
+                                    <i className="fab fa-github"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <p style={{color: '#ccc', marginBottom: '1rem'}}>{project.description}</p>
+                        <div style={{display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1rem'}}>
+                            {project.tags.map((tag, tagIndex) => (
+                                <span key={tagIndex} style={{
+                                    padding: '0.25rem 0.75rem',
+                                    backgroundColor: 'rgba(0, 212, 255, 0.2)',
+                                    borderRadius: '1rem',
+                                    fontSize: '0.875rem',
+                                    color: 'var(--cyan-neon)'
+                                }}>
+                                    {tag}
+                                </span>
+                            ))}
+                        </div>
+                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                            <span style={{color: '#999'}}><i className="fas fa-eye"></i> {project.stats}</span>
+                            <a href={project.site} target="_blank" rel="noopener noreferrer" className="btn btn-secondary">View Project</a>
+                        </div>
+                    </div>
+                ))}
+            </div>
+        </section>
+    );
+}
+
+        // Contact Component
+        function Contact() {
+            const [formData, setFormData] = useState({
+                name: '', email: '', message: ''
+            });
+
+            const handleChange = (e) => {
+                setFormData({...formData, [e.target.name]: e.target.value});
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                console.log('Form submitted:', formData);
+            };
+
+            return (
+                <section id="contact" className="section">
+                    <div className="section-title">
+                        <h2 className="font-orbitron"><i className="fas fa-satellite-dish"></i> Get In Touch</h2>
+                    </div>
+                    <div className="grid grid-2">
+                        <div className="card">
+                            <h3 className="font-orbitron text-purple-neon" style={{marginBottom: '1.5rem'}}>
+                                <i className="fas fa-paper-plane"></i> Send Message
+                            </h3>
+                            <form onSubmit={handleSubmit}>
+                                <div className="form-group">
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        placeholder="Your Name"
+                                        value={formData.name}
+                                        onChange={handleChange}
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <input
+                                        type="email"
+                                        name="email"
+                                        placeholder="Your Email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className="form-input"
+                                        required
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <textarea
+                                        name="message"
+                                        placeholder="Your Message"
+                                        rows="5"
+                                        value={formData.message}
+                                        onChange={handleChange}
+                                        className="form-input"
+                                        style={{resize: 'vertical'}}
+                                        required
+                                    />
+                                </div>
+                                <button type="submit" className="btn" style={{
+                                    width: '100%',
+                                    background: 'linear-gradient(to right, var(--cyan-neon), var(--purple-neon))',
+                                    color: 'black'
+                                }}>
+                                    <i className="fas fa-rocket"></i> Send Message
+                                </button>
+                            </form>
+                        </div>
+                        <div className="card">
+                            <h3 className="font-orbitron text-cyan-neon" style={{marginBottom: '1.5rem'}}>
+                                <i className="fas fa-address-card"></i> Contact Info
+                            </h3>
+                            <div style={{marginBottom: '1.5rem'}}>
+                                <div style={{display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
+                                    <i className="fas fa-envelope text-cyan-neon" style={{marginRight: '1rem', width: '20px'}}></i>
+                                    <div>
+                                        <p><strong>Email</strong></p>
+                                        <p style={{color: '#ccc'}}>22b01a4214@svecw.edu.in</p>
+                                    </div>
+                                </div>
+                                <div style={{display: 'flex', alignItems: 'center', marginBottom: '1rem'}}>
+                                    <i className="fas fa-phone text-purple-neon" style={{marginRight: '1rem', width: '20px'}}></i>
+                                    <div>
+                                        <p><strong>Phone</strong></p>
+                                        <p style={{color: '#ccc'}}>+91 9392447036</p>
+                                    </div>
+                                </div>
+                                <div style={{display: 'flex', alignItems: 'center'}}>
+                                    <i className="fas fa-map-marker-alt text-cyan-neon" style={{marginRight: '1rem', width: '20px'}}></i>
+                                    <div>
+                                        <p><strong>Location</strong></p>
+                                        <p style={{color: '#ccc'}}>Andhra Pradesh, India</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 className="font-orbitron text-purple-neon" style={{marginBottom: '1rem'}}>
+                                <i className="fas fa-share-alt"></i> Social Links
+                            </h4>
+                           
+<div style={{display: 'flex', gap: '1rem'}}>
+    <a href="https://www.linkedin.com/in/sindhu-bodapati-998261259" className="btn" target="_blank" rel="noopener noreferrer" style={{
+        width: '3rem', height: '3rem', borderRadius: '50%', 
+        background: '#0e76a8', display: 'flex', alignItems: 'center', justifyContent: 'center'
+    }}>
+        <i className="fab fa-linkedin-in"></i>
+    </a>
+    <a href="https://github.com/Sindhubodapati" className="btn" target="_blank" rel="noopener noreferrer" style={{
+        width: '3rem', height: '3rem', borderRadius: '50%', 
+        background: '#333', display: 'flex', alignItems: 'center', justifyContent: 'center'
+    }}>
+        <i className="fab fa-github"></i>
+    </a>
+    <a href="https://leetcode.com/Sindhubodapati" className="btn" target="_blank" rel="noopener noreferrer" style={{
+        width: '3rem', height: '3rem', borderRadius: '50%', 
+        background: '#f39c12', display: 'flex', alignItems: 'center', justifyContent: 'center'
+    }}>
+        <i className="fas fa-code"></i>
+    </a>
+    <a href="https://www.hackerrank.com/profile/Sindhu_bodapati" className="btn" target="_blank" rel="noopener noreferrer" style={{
+        width: '3rem', height: '3rem', borderRadius: '50%', 
+        background: '#00ea64', display: 'flex', alignItems: 'center', justifyContent: 'center'
+    }}>
+        <i className="fab fa-hackerrank"></i>
+    </a>
+</div>
+
+                        </div>
+                    </div>
+                </section>
+            );
+        }
+
+        // Floating Shapes Component
+        function FloatingShapes() {
+            return (
+                <div className="floating-shapes">
+                    <div className="shape shape-1"></div>
+                    <div className="shape shape-2"></div>
+                    <div className="shape shape-3"></div>
+                    <div className="shape shape-4"></div>
+                </div>
+            );
+        }
+
+        // Main App Component
+        function App() {
+            return (
+                <div>
+                    <FloatingShapes />
+                    <Navigation />
+                    <Hero />
+                    <About />
+                    <Skills />
+                    <Projects />
+                    <Contact />
+                    
+                    {/* Footer */}
+                    <footer className="glass-effect" style={{padding: '2rem', textAlign: 'center'}}>
+                        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem'}}>
+                            <div className="font-orbitron text-cyan-neon">
+                                <i className="fas fa-code"></i> SINDHU.DEV
+                            </div>
+                            <div style={{color: '#999'}}>
+                                © 2024 Bodapati Lakshmi Surya Sindhu. All rights reserved.
+                            </div>
+                            <div style={{display: 'flex', gap: '1rem'}}>
+                                <i className="fas fa-rocket text-cyan-neon"></i>
+                                <i className="fas fa-brain text-purple-neon"></i>
+                                <i className="fas fa-code text-cyan-neon"></i>
+                            </div>
+                        </div>
+                    </footer>
+                </div>
+            );
+        }
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
